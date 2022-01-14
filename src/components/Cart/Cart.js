@@ -49,7 +49,7 @@ const Cart = (props) => {
           <button
             className={classes.button}
             onClick={() => {
-              cartCtx.items = [];
+              console.log("meal was order");
             }}
           >
             Order
