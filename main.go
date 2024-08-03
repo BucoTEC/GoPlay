@@ -4,5 +4,6 @@ import "fmt"
 
 
 func main(){
-	fmt.Println("Hello my old friend")
+	name := "Adnan"
+	fmt.Printf("Hello my old friend %v \n", name)
 }
