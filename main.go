@@ -17,5 +17,13 @@ func main(){
 	}
 
 	fmt.Printf("No my old friend %v \n", name)
+
+	oldFriend := helpers.Human{
+		Age: 12,
+		FirstName: "Safet",
+		LastName: "Zajko",
+	} 
+
+	fmt.Println(oldFriend.FirstName)
 }
 
