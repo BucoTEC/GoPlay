@@ -27,5 +27,3 @@ func main(){
 	fmt.Println(oldFriend.FirstName)
 	oldFriend.PrintFullName()
 }
-
-// these are my changes
