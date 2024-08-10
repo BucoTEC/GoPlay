@@ -24,6 +24,11 @@ func main(){
 		LastName: "Zajko",
 	} 
 
+	changeName(&oldFriend.FirstName)
 	fmt.Println(oldFriend.FirstName)
 	oldFriend.PrintFullName()
+}
+
+func changeName(name *string){
+	*name = "Hello new name"
 }
