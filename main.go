@@ -31,4 +31,5 @@ func main(){
 
 func changeName(name *string){
 	*name = "Hello new name"
+	fmt.Println("Hello my friend")
 }
