@@ -8,7 +8,7 @@ import (
 )
 
 func main(){
-	godotenv.Load(".env")
+	godotenv.Load()
 
 	port := os.Getenv("PORT")
 	name := "Adnan"
