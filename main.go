@@ -2,15 +2,41 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net/http"
 	"os"
 
+	"github.com/go-chi/chi"
+	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
 )
 
-func main(){
+func main() {
 	godotenv.Load()
 
 	port := os.Getenv("PORT")
 	name := "Adnan"
-	fmt.Printf("Hello my name is %v, nice to meet you. I am running on port %v \n",name,port)
+
+	router := chi.NewRouter()
+
+	router.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"https://*", "http://*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"*"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: false,
+		MaxAge:           300,
+	}))
+
+	srv := &http.Server{
+		Handler: router,
+		Addr:    ":" + port,
+	}
+
+	fmt.Printf("Hello %v, server running on port %v \n", name, port)
+
+	err := srv.ListenAndServe()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
