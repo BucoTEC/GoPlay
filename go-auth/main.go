@@ -14,14 +14,14 @@ func main() {
 		port = "8000"
 	}
 
-	router:= gin.New()
+	router := gin.New()
 	router.Use(gin.Logger())
 
 	routes.AuthRoutes(router)
 	routes.UserRoutes(router)
 
-	router.GET("/", func(c *gin.Context){
-		c.JSON(200, gin.H{"message":"Hello from gin"})
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{"message": "Hello from gin"})
 	})
 
 	router.Run(":" + port)
