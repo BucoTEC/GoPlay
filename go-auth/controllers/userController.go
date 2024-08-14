@@ -5,16 +5,12 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/BucoTEC/go-auth/database"
 	"github.com/BucoTEC/go-auth/helpers"
 	"github.com/BucoTEC/go-auth/models"
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/mongo"
 	"gopkg.in/mgo.v2/bson"
 )
 
-var userCollection *mongo.Collection = database.OpenCollection(database.Client, "user")
-// var validate = validator.New()
 
 func GetUsers() gin.HandlerFunc{
 	return func(c *gin.Context){}
