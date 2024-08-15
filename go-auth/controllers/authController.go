@@ -55,7 +55,7 @@ func Signup() gin.HandlerFunc{
 			c.JSON(http.StatusInternalServerError, gin.H{"error":"error occurred while checking for the phone number"})
 		}
 
-		if count >0{
+		if count > 0{
 			c.JSON(http.StatusInternalServerError, gin.H{"error":"this email or phone number already exists"})
 		}
 
