@@ -14,5 +14,10 @@ func main(){
 		return c.SendString("Hello world")
 	})
 
+	app.Get("/:id",func(c *fiber.Ctx) error {
+		param := c.Params("id")
+		return c.SendString("Hello world" + param)
+	})
+
 	app.Listen(":3000")
 }
