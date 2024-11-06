@@ -7,8 +7,7 @@ import (
 
 func main() {
 	app := fiber.New()
-	api := app.Group("/api")
-	v1 := api.Group("/v1")
+	v1 := configureV1(app)
 
 	v1.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("hello from the api")
@@ -21,3 +20,9 @@ func main() {
 // TODO crud operations on users (search function by name which needs to be unique)
 // TODO crud operations on wallets (many to meany but there needs to be a wallet owner)
 // TODO look how to setup transactions on the wallet instance
+
+func configureV1(app fiber.Router) fiber.Router {
+	api := app.Group("/api")
+	v1 := api.Group("/v1")
+	return v1
+}
