@@ -1,14 +1,20 @@
 package main
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/BucoTEC/fiber-wallet/api/routes"
+	"github.com/gofiber/fiber/v2"
+)
 
 func main() {
 	app := fiber.New()
+	api := app.Group("/api")
+	v1 := api.Group("/v1")
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
+	v1.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("hello from the api")
 	})
 
+	routes.UserRouter(v1)
 	app.Listen(":3000")
 }
 
