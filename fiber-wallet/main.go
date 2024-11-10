@@ -13,7 +13,10 @@ func main() {
 		return c.SendString("hello from the api")
 	})
 
+	// setup routes
 	routes.UserRouter(v1)
+	routes.WalletRoutes(v1)
+
 	app.Listen(":3000")
 }
 
