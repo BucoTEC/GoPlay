@@ -1,10 +1,12 @@
 package wallet
 
+import "github.com/BucoTEC/fiber-wallet/pkg/infrastructure/models"
+
 type Service interface {
 	GetWalletById(Id string)
 	DeleteWallet(Id string)
-	CreateWallet(wallet Wallet)
-	UpdateWallet(wallet Wallet, Id string)
+	CreateWallet(wallet models.Wallet)
+	UpdateWallet(wallet models.Wallet, Id string)
 }
 
 type service struct {
@@ -25,10 +27,10 @@ func (r *service) DeleteWallet(Id string) {
 
 }
 
-func (r *service) CreateWallet(wallet Wallet) {
+func (r *service) CreateWallet(wallet models.Wallet) {
 
 }
 
-func (r *service) UpdateWallet(wallet Wallet, Id string) {
+func (r *service) UpdateWallet(wallet models.Wallet, Id string) {
 
 }

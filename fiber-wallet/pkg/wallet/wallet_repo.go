@@ -1,12 +1,15 @@
 package wallet
 
-import "gorm.io/gorm"
+import (
+	"github.com/BucoTEC/fiber-wallet/pkg/infrastructure/models"
+	"gorm.io/gorm"
+)
 
 type Repository interface {
 	GetWalletById(Id string)
 	DeleteWallet(Id string)
-	CreateWallet(wallet Wallet)
-	UpdateWallet(Wallet Wallet, Id string)
+	CreateWallet(wallet models.Wallet)
+	UpdateWallet(Wallet models.Wallet, Id string)
 }
 
 type repository struct {
@@ -27,10 +30,10 @@ func (r *repository) DeleteWallet(Id string) {
 
 }
 
-func (r *repository) CreateWallet(Wallet Wallet) {
+func (r *repository) CreateWallet(Wallet models.Wallet) {
 
 }
 
-func (r *repository) UpdateWallet(Wallet Wallet, Id string) {
+func (r *repository) UpdateWallet(Wallet models.Wallet, Id string) {
 
 }

@@ -1,12 +1,15 @@
 package user
 
-import "gorm.io/gorm"
+import (
+	"github.com/BucoTEC/fiber-wallet/pkg/infrastructure/models"
+	"gorm.io/gorm"
+)
 
 type Repository interface {
 	GetUserById(Id string)
 	DeleteUser(Id string)
-	CreateUser(user User)
-	UpdateUser(user User, Id string)
+	CreateUser(user models.User)
+	UpdateUser(user models.User, Id string)
 }
 
 type repository struct {
@@ -27,10 +30,10 @@ func (r *repository) DeleteUser(Id string) {
 
 }
 
-func (r *repository) CreateUser(user User) {
+func (r *repository) CreateUser(user models.User) {
 
 }
 
-func (r *repository) UpdateUser(user User, Id string) {
+func (r *repository) UpdateUser(user models.User, Id string) {
 
 }
