@@ -17,11 +17,12 @@ func main() {
 	})
 
 	infrastructure.ConnectDb()
-	userRepo := user.NewRepo(infrastructure.DB.Db)
-	userService := user.NewService(userRepo)
 
 	walletRepo := wallet.NewRepo(infrastructure.DB.Db)
 	walletService := wallet.NewService(walletRepo)
+
+	userRepo := user.NewRepo(infrastructure.DB.Db)
+	userService := user.NewService(userRepo)
 	// setup routes
 	routes.UserRouter(v1, userService)
 	routes.WalletRoutes(v1, walletService)

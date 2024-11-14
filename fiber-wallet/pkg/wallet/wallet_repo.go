@@ -6,7 +6,7 @@ type Repository interface {
 	GetWalletById(Id string)
 	DeleteWallet(Id string)
 	CreateWallet(wallet Wallet)
-	UpdateWallet(wallet Wallet, Id string)
+	UpdateWallet(Wallet Wallet, Id string)
 }
 
 type repository struct {
@@ -27,10 +27,10 @@ func (r *repository) DeleteWallet(Id string) {
 
 }
 
-func (r *repository) CreateWallet(wallet Wallet) {
+func (r *repository) CreateWallet(Wallet Wallet) {
 
 }
 
-func (r *repository) UpdateWallet(wallet Wallet, Id string) {
+func (r *repository) UpdateWallet(Wallet Wallet, Id string) {
 
 }
