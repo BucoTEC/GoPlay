@@ -1,7 +1,9 @@
 package user
 
+import "github.com/BucoTEC/fiber-wallet/pkg/infrastructure/models"
+
 type Service interface {
-	Hello()
+	CreateUser(user models.User) error
 }
 
 type service struct {
@@ -14,4 +16,6 @@ func NewService(repo Repository) Service {
 	}
 }
 
-func (s *service) Hello() {}
+func (s *service) CreateUser(user models.User) error {
+	return s.repo.CreateUser(user)
+}

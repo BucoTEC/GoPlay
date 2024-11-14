@@ -36,7 +36,7 @@ func (r *repository) CreateUser(user models.User) error {
 
 	var existingUser models.User
 
-	// Check if a user with the given email already exists
+	// Check if a user with the given email already exists // TODO mode this check to the service
 	if err := r.db.Where("email = ?", user.Email).First(&existingUser).Error; err == nil {
 		return fmt.Errorf("user with this email already exists")
 	}
