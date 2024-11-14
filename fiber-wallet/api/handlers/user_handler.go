@@ -48,5 +48,3 @@ func DeleteUser(service user.Service) fiber.Handler {
 		return c.SendString("delete user")
 	}
 }
-
-// TODO maybe move to struct
