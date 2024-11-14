@@ -1,33 +1,38 @@
 package handlers
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/BucoTEC/fiber-wallet/pkg/user"
+	"github.com/gofiber/fiber/v2"
+)
 
-func SearchUsers() fiber.Handler {
+func SearchUsers(service user.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		return c.SendString("search users")
 	}
 }
 
-func GetUser() fiber.Handler {
+func GetUser(service user.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		return c.SendString("get user by id")
 	}
 }
 
-func CreateUser() fiber.Handler {
+func CreateUser(service user.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		return c.SendString("create user")
 	}
 }
 
-func UpdateUser() fiber.Handler {
+func UpdateUser(service user.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		return c.SendString("update user")
 	}
 }
 
-func DeleteUser() fiber.Handler {
+func DeleteUser(service user.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		return c.SendString("delete user")
 	}
 }
+
+// TODO maybe move to struct

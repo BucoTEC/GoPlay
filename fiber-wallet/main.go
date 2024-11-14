@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/BucoTEC/fiber-wallet/api/routes"
 	"github.com/BucoTEC/fiber-wallet/pkg/infrastructure"
+	"github.com/BucoTEC/fiber-wallet/pkg/user"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -15,8 +16,10 @@ func main() {
 	})
 
 	infrastructure.ConnectDb()
+	userRepo := user.NewRepo(infrastructure.DB.Db)
+	userService := user.NewService(userRepo)
 	// setup routes
-	routes.UserRouter(v1)
+	routes.UserRouter(v1, userService)
 	routes.WalletRoutes(v1)
 
 	app.Listen(":3000")
