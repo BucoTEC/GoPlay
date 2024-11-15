@@ -10,6 +10,7 @@ import (
 type Repository interface {
 	GetUserById(Id string)
 	DeleteUser(Id string)
+	SearchUsers(searchCondition map[string]interface{}) ([]models.User, error)
 	CreateUser(user models.User) error
 	UpdateUser(user models.User, Id string)
 }
@@ -28,6 +29,17 @@ func (r *repository) GetUserById(Id string) {
 
 }
 
+func (r *repository) SearchUsers(searchCondition map[string]interface{}) ([]models.User, error) {
+	var users []models.User
+
+	// Query the database with a one-liner error check
+	if err := r.db.Where(searchCondition).Find(&users).Error; err != nil {
+		return nil, fmt.Errorf("error searching users: %w", err)
+	}
+
+	return users, nil
+}
+
 func (r *repository) DeleteUser(Id string) {
 
 }
@@ -36,12 +48,10 @@ func (r *repository) CreateUser(user models.User) error {
 
 	var existingUser models.User
 
-	// Check if a user with the given email already exists // TODO mode this check to the service
 	if err := r.db.Where("email = ?", user.Email).First(&existingUser).Error; err == nil {
 		return fmt.Errorf("user with this email already exists")
 	}
 
-	// If no user found, create a new user
 	result := r.db.Create(&user)
 	return result.Error
 }
