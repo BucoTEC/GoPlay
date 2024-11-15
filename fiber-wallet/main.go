@@ -6,6 +6,10 @@ import (
 	"github.com/BucoTEC/fiber-wallet/pkg/user"
 	"github.com/BucoTEC/fiber-wallet/pkg/wallet"
 	"github.com/gofiber/fiber/v2"
+
+	swagger "github.com/arsmn/fiber-swagger/v2"
+
+	_ "github.com/BucoTEC/fiber-wallet/docs"
 )
 
 func main() {
@@ -15,6 +19,8 @@ func main() {
 	v1.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("hello from the api")
 	})
+
+	v1.Get("/docs/*", swagger.HandlerDefault)
 
 	infrastructure.ConnectDb()
 
