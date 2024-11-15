@@ -8,6 +8,7 @@ import (
 
 type Service interface {
 	CreateUser(user models.User) error
+	SearchUsers(conditions map[string]interface{}) ([]models.User, error)
 }
 
 type service struct {
@@ -35,4 +36,13 @@ func (s *service) CreateUser(user models.User) error {
 	}
 
 	return s.repo.CreateUser(user)
+}
+
+func (s *service) SearchUsers(conditions map[string]interface{}) ([]models.User, error) {
+	users, err := s.repo.SearchUsers(conditions)
+	if err != nil {
+		return nil, err
+	}
+
+	return users, nil
 }

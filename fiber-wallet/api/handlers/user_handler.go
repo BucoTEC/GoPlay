@@ -8,7 +8,32 @@ import (
 
 func SearchUsers(service user.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		return c.SendString("search users")
+
+		// Extract email from query string
+		email := c.Query("email")
+		if email == "" {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "email query parameter is required",
+			})
+		}
+
+		// Create conditions map
+		conditions := map[string]interface{}{
+			"email": email,
+			// Include additional conditions if needed, like soft-delete
+			"deleted_at": nil,
+		}
+
+		// Call the service to search for users
+		users, err := service.SearchUsers(conditions)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": err.Error(),
+			})
+		}
+
+		// Return users as JSON
+		return c.Status(fiber.StatusOK).JSON(users)
 	}
 }
 
