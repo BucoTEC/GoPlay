@@ -89,6 +89,17 @@ func UpdateUser(service user.Service) fiber.Handler {
 
 func DeleteUser(service user.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		return c.SendString("delete user")
+		id := c.Params("id")
+		if id == "" {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "id path parameter is required",
+			})
+		}
+
+		if err := service.DeleteUser(id); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err})
+		}
+
+		return c.Status(fiber.StatusOK).SendString("delete user")
 	}
 }

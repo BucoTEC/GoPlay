@@ -2,6 +2,7 @@ package user
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/BucoTEC/fiber-wallet/pkg/infrastructure/models"
 	"gorm.io/gorm"
@@ -9,7 +10,7 @@ import (
 
 type Repository interface {
 	GetUserById(Id string) models.User
-	DeleteUser(Id string)
+	DeleteUser(user models.User) error
 	SearchUsers(searchCondition map[string]interface{}) ([]models.User, error)
 	CreateUser(user models.User) error
 	UpdateUser(user models.User, Id string)
@@ -42,8 +43,14 @@ func (r *repository) SearchUsers(searchCondition map[string]interface{}) ([]mode
 	return users, nil
 }
 
-func (r *repository) DeleteUser(Id string) {
+func (r *repository) DeleteUser(user models.User) error {
+	user.DeletedAt = gorm.DeletedAt{Time: time.Now(), Valid: true}
 
+	if err := r.db.Save(&user).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (r *repository) CreateUser(user models.User) error {

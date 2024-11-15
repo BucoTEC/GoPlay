@@ -10,6 +10,7 @@ type Service interface {
 	CreateUser(user models.User) error
 	GetUserById(Id string) models.User
 	SearchUsers(conditions map[string]interface{}) ([]models.User, error)
+	DeleteUser(Id string) error
 }
 
 type service struct {
@@ -50,4 +51,14 @@ func (s *service) SearchUsers(conditions map[string]interface{}) ([]models.User,
 
 func (s *service) GetUserById(Id string) models.User {
 	return s.repo.GetUserById(Id)
+}
+
+func (s *service) DeleteUser(Id string) error {
+	user := s.GetUserById(Id)
+
+	if user.ID == 0 {
+		return fmt.Errorf("no user found with provided id")
+	}
+
+	return s.repo.DeleteUser(user)
 }
