@@ -37,9 +37,28 @@ func SearchUsers(service user.Service) fiber.Handler {
 	}
 }
 
-func GetUser(service user.Service) fiber.Handler {
+func GetUserById(service user.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		return c.SendString("get user by id")
+		// Extract the user ID from the path parameter
+		id := c.Params("id")
+		if id == "" {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "id path parameter is required",
+			})
+		}
+
+		// Call the service to get the user by ID
+		user := service.GetUserById(id)
+
+		// If no user is found, return a 404 Not Found
+		if user.ID == 0 {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"error": "user not found",
+			})
+		}
+
+		// Return the user as JSON
+		return c.Status(fiber.StatusOK).JSON(user)
 	}
 }
 

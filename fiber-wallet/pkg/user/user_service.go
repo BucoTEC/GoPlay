@@ -8,6 +8,7 @@ import (
 
 type Service interface {
 	CreateUser(user models.User) error
+	GetUserById(Id string) models.User
 	SearchUsers(conditions map[string]interface{}) ([]models.User, error)
 }
 
@@ -45,4 +46,8 @@ func (s *service) SearchUsers(conditions map[string]interface{}) ([]models.User,
 	}
 
 	return users, nil
+}
+
+func (s *service) GetUserById(Id string) models.User {
+	return s.repo.GetUserById(Id)
 }

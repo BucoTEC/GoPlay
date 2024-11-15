@@ -8,7 +8,7 @@ import (
 )
 
 type Repository interface {
-	GetUserById(Id string)
+	GetUserById(Id string) models.User
 	DeleteUser(Id string)
 	SearchUsers(searchCondition map[string]interface{}) ([]models.User, error)
 	CreateUser(user models.User) error
@@ -25,8 +25,10 @@ func NewRepo(db *gorm.DB) Repository {
 	}
 }
 
-func (r *repository) GetUserById(Id string) {
-
+func (r *repository) GetUserById(Id string) models.User {
+	var user models.User
+	r.db.First(&user, Id)
+	return user
 }
 
 func (r *repository) SearchUsers(searchCondition map[string]interface{}) ([]models.User, error) {
