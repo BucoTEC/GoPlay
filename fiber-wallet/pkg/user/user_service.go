@@ -7,9 +7,9 @@ import (
 )
 
 type Service interface {
-	CreateUser(user models.User) error
-	GetUserById(Id string) models.User
-	SearchUsers(conditions map[string]interface{}) ([]models.User, error)
+	CreateUser(user *models.User) error
+	GetUserById(Id string) *models.User
+	SearchUsers(conditions map[string]interface{}) (*[]models.User, error)
 	DeleteUser(Id string) error
 }
 
@@ -23,7 +23,7 @@ func NewService(repo Repository) Service {
 	}
 }
 
-func (s *service) CreateUser(user models.User) error {
+func (s *service) CreateUser(user *models.User) error {
 	conditions := map[string]interface{}{
 		"email":      user.Email,
 		"deleted_at": nil,
@@ -33,14 +33,14 @@ func (s *service) CreateUser(user models.User) error {
 		return err
 	}
 
-	if len(users) > 0 {
+	if len(*users) > 0 {
 		return fmt.Errorf("user with this email already exists")
 	}
 
 	return s.repo.CreateUser(user)
 }
 
-func (s *service) SearchUsers(conditions map[string]interface{}) ([]models.User, error) {
+func (s *service) SearchUsers(conditions map[string]interface{}) (*[]models.User, error) {
 	users, err := s.repo.SearchUsers(conditions)
 	if err != nil {
 		return nil, err
@@ -49,7 +49,7 @@ func (s *service) SearchUsers(conditions map[string]interface{}) ([]models.User,
 	return users, nil
 }
 
-func (s *service) GetUserById(Id string) models.User {
+func (s *service) GetUserById(Id string) *models.User {
 	return s.repo.GetUserById(Id)
 }
 

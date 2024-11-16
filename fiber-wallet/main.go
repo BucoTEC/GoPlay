@@ -16,10 +16,6 @@ func main() {
 	app := fiber.New()
 	v1 := configureV1(app)
 
-	v1.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("hello from the api")
-	})
-
 	v1.Get("/docs/*", swagger.HandlerDefault)
 
 	infrastructure.ConnectDb()

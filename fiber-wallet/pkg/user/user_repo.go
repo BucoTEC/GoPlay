@@ -9,11 +9,11 @@ import (
 )
 
 type Repository interface {
-	GetUserById(Id string) models.User
-	DeleteUser(user models.User) error
-	SearchUsers(searchCondition map[string]interface{}) ([]models.User, error)
-	CreateUser(user models.User) error
-	UpdateUser(user models.User, Id string)
+	GetUserById(Id string) *models.User
+	DeleteUser(user *models.User) error
+	SearchUsers(searchCondition map[string]interface{}) (*[]models.User, error)
+	CreateUser(user *models.User) error
+	UpdateUser(user *models.User) error
 }
 
 type repository struct {
@@ -26,13 +26,13 @@ func NewRepo(db *gorm.DB) Repository {
 	}
 }
 
-func (r *repository) GetUserById(Id string) models.User {
+func (r *repository) GetUserById(Id string) *models.User {
 	var user models.User
 	r.db.First(&user, Id)
-	return user
+	return &user
 }
 
-func (r *repository) SearchUsers(searchCondition map[string]interface{}) ([]models.User, error) {
+func (r *repository) SearchUsers(searchCondition map[string]interface{}) (*[]models.User, error) {
 	var users []models.User
 
 	// Query the database with a one-liner error check
@@ -40,10 +40,10 @@ func (r *repository) SearchUsers(searchCondition map[string]interface{}) ([]mode
 		return nil, fmt.Errorf("error searching users: %w", err)
 	}
 
-	return users, nil
+	return &users, nil
 }
 
-func (r *repository) DeleteUser(user models.User) error {
+func (r *repository) DeleteUser(user *models.User) error {
 	user.DeletedAt = gorm.DeletedAt{Time: time.Now(), Valid: true}
 
 	if err := r.db.Save(&user).Error; err != nil {
@@ -53,7 +53,7 @@ func (r *repository) DeleteUser(user models.User) error {
 	return nil
 }
 
-func (r *repository) CreateUser(user models.User) error {
+func (r *repository) CreateUser(user *models.User) error {
 
 	var existingUser models.User
 
@@ -65,6 +65,7 @@ func (r *repository) CreateUser(user models.User) error {
 	return result.Error
 }
 
-func (r *repository) UpdateUser(user models.User, Id string) {
-
+func (r *repository) UpdateUser(user *models.User) error {
+	result := r.db.Save(user)
+	return result.Error
 }

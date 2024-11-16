@@ -72,7 +72,7 @@ func CreateUser(service user.Service) fiber.Handler {
 		}
 
 		// Call the CreateUser method on the service
-		if err := service.CreateUser(user); err != nil {
+		if err := service.CreateUser(&user); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "could not create user", "message": err.Error()})
 		}
 
