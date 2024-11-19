@@ -1,4 +1,148 @@
+definitions:
+  handlers.HTTPError:
+    description: A standard error response structure
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
 info:
   contact: {}
-paths: {}
+paths:
+  /:
+    get:
+      consumes:
+      - '*/*'
+      description: get the status of server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Show the status of server.
+      tags:
+      - root
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes an existing user based on the user ID provided in the path
+        parameter.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User successfully deleted
+          schema:
+            type: string
+        "400":
+          description: Invalid request, missing parameters or deletion error
+          schema:
+            $ref: '#/definitions/handlers.HTTPError'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/handlers.HTTPError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handlers.HTTPError'
+      summary: Delete a user
+      tags:
+      - users
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a user by their unique ID. If the user is not found,
+        a 404 Not Found error is returned.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request, missing id path parameter
+          schema:
+            $ref: '#/definitions/handlers.HTTPError'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/handlers.HTTPError'
+      summary: Get user by ID
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Updates the details of an existing user. This requires the user
+        ID and the data to be updated.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Invalid request, missing parameters
+          schema:
+            $ref: '#/definitions/handlers.HTTPError'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/handlers.HTTPError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handlers.HTTPError'
+      summary: Update user details
+      tags:
+      - users
+  /users/search:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of users based on the email query parameter.
+      parameters:
+      - description: Email address of the user to search for
+        in: query
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request, missing email query parameter
+          schema:
+            $ref: '#/definitions/handlers.HTTPError'
+        "500":
+          description: Internal server error, failed to fetch users
+          schema:
+            $ref: '#/definitions/handlers.HTTPError'
+      summary: Search users by email
+      tags:
+      - users
 swagger: "2.0"
