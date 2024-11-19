@@ -61,7 +61,6 @@ func HealthCheck(c *fiber.Ctx) error {
 }
 
 // TODO add dtos for the user routes
-// TODO validate project structure and possible use of the cmd folder
 // TODO add crud operations for wallets
 // TODO add auth
 // TODO look into setting up generic repo
