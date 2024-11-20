@@ -86,6 +86,17 @@ func GetUserById(service user.Service) fiber.Handler {
 	}
 }
 
+// CreateUser handles the creation of a new user.
+//
+// @Summary      Create a new user
+// @Description  Create a new user with the provided payload.
+// @Tags         Users
+// @Accept       json
+// @Produce      json
+// @Param        user  body      user.CreateUserRequest  true  "Create User Payload"
+// @Success      201   {object}  user.CreateUserRequest  "User created successfully"
+// @Failure      400   {object}  user.CreateUserRequest  "Invalid request or user creation failed"
+// @Router       /api/v1/users [post]
 func CreateUser(service user.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var createUserPayload user.CreateUserRequest

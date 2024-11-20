@@ -7,6 +7,23 @@ definitions:
       message:
         type: string
     type: object
+  user.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        minLength: 8
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - password
+    type: object
 info:
   contact: {}
 paths:
@@ -26,6 +43,32 @@ paths:
       summary: Show the status of server.
       tags:
       - root
+  /api/v1/users:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user with the provided payload.
+      parameters:
+      - description: Create User Payload
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User created successfully
+          schema:
+            $ref: '#/definitions/user.CreateUserRequest'
+        "400":
+          description: Invalid request or user creation failed
+          schema:
+            $ref: '#/definitions/user.CreateUserRequest'
+      summary: Create a new user
+      tags:
+      - Users
   /users/{id}:
     delete:
       consumes:

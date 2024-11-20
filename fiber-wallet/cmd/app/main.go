@@ -60,7 +60,7 @@ func HealthCheck(c *fiber.Ctx) error {
 	return nil
 }
 
-// TODO add dtos for the user routes
+// BUG run script dose not update the air
 // TODO add crud operations for wallets
 // TODO add auth
 // TODO look into setting up generic repo
