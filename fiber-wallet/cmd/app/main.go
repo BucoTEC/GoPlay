@@ -27,7 +27,6 @@ func main() {
 	userService := user.NewService(userRepo)
 
 	// setup routes
-	app.Get("/", HealthCheck)
 	routes.UserRouter(v1, userService)
 	routes.WalletRoutes(v1, walletService)
 
@@ -38,26 +37,6 @@ func configureV1(app fiber.Router) fiber.Router {
 	api := app.Group("/api")
 	v1 := api.Group("/v1")
 	return v1
-}
-
-// HealthCheck godoc
-// @Summary Show the status of server.
-// @Description get the status of server.
-// @Tags root
-// @Accept */*
-// @Produce json
-// @Success 200 {object} map[string]interface{}
-// @Router / [get]
-func HealthCheck(c *fiber.Ctx) error {
-	res := map[string]interface{}{
-		"data": "Server is up and running",
-	}
-
-	if err := c.JSON(res); err != nil {
-		return err
-	}
-
-	return nil
 }
 
 // BUG run script dose not update the air
