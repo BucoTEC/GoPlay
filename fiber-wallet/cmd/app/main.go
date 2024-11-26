@@ -40,6 +40,7 @@ func configureV1(app fiber.Router) fiber.Router {
 }
 
 // BUG run script dose not update the air
+// TODO update the variables to load from configuration file
 // TODO add crud operations for wallets
 // TODO add auth
 // TODO look into setting up generic repo
