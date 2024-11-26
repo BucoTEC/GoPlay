@@ -48,3 +48,5 @@ func (r *repository) CreateWallet(wallet *models.Wallet) error {
 func (r *repository) UpdateWallet(Wallet *models.Wallet, Id string) {
 
 }
+
+// TODO investigate if lern go will help
