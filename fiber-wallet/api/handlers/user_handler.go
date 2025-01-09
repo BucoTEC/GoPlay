@@ -6,19 +6,19 @@ import (
 )
 
 // SearchUsers godoc
-// @Summary      Search users by email
-// @Description  Retrieves a list of users based on the email query parameter.
+//	@Summary		Search users by email
+//	@Description	Retrieves a list of users based on the email query parameter.
 //
 //	If the email query parameter is missing, a 400 Bad Request error is returned.
 //
-// @Tags         users
-// @Accept       json
-// @Produce      json
-// @Param        email  query     string  true  "Email address of the user to search for"
-// @Failure      400    {object}  HTTPError  "Bad request, missing email query parameter"
-// @Failure      500    {object}  HTTPError  "Internal server error, failed to fetch users"
-// @Response     200
-// @Router       /users/search [get]
+//	@Tags			users
+//	@Accept			json
+//	@Produce		json
+//	@Param			email	query		string		true	"Email address of the user to search for"
+//	@Failure		400		{object}	HTTPError	"Bad request, missing email query parameter"
+//	@Failure		500		{object}	HTTPError	"Internal server error, failed to fetch users"
+//	@Response		200
+//	@Router			/users/search [get]
 func SearchUsers(service user.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 
@@ -51,16 +51,16 @@ func SearchUsers(service user.Service) fiber.Handler {
 }
 
 // GetUserById godoc
-// @Summary      Get user by ID
-// @Description  Retrieves a user by their unique ID. If the user is not found, a 404 Not Found error is returned.
-// @Tags         users
-// @Accept       json
-// @Produce      json
-// @Param        id   path      int  true  "User ID"
-// @Failure      400  {object}  HTTPError  "Bad request, missing id path parameter"
-// @Failure      404  {object}  HTTPError  "User not found"
-// @Response     200
-// @Router       /users/{id} [get]
+//	@Summary		Get user by ID
+//	@Description	Retrieves a user by their unique ID. If the user is not found, a 404 Not Found error is returned.
+//	@Tags			users
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int			true	"User ID"
+//	@Failure		400	{object}	HTTPError	"Bad request, missing id path parameter"
+//	@Failure		404	{object}	HTTPError	"User not found"
+//	@Response		200
+//	@Router			/users/{id} [get]
 func GetUserById(service user.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		// Extract the user ID from the path parameter
@@ -88,15 +88,15 @@ func GetUserById(service user.Service) fiber.Handler {
 
 // CreateUser handles the creation of a new user.
 //
-// @Summary      Create a new user
-// @Description  Create a new user with the provided payload.
-// @Tags         Users
-// @Accept       json
-// @Produce      json
-// @Param        user  body      user.CreateUserRequest  true  "Create User Payload"
-// @Success      201   {object}  user.CreateUserRequest  "User created successfully"
-// @Failure      400   {object}  user.CreateUserRequest  "Invalid request or user creation failed"
-// @Router       /api/v1/users [post]
+//	@Summary		Create a new user
+//	@Description	Create a new user with the provided payload.
+//	@Tags			Users
+//	@Accept			json
+//	@Produce		json
+//	@Param			user	body		user.CreateUserRequest	true	"Create User Payload"
+//	@Success		201		{object}	user.CreateUserRequest	"User created successfully"
+//	@Failure		400		{object}	user.CreateUserRequest	"Invalid request or user creation failed"
+//	@Router			/api/v1/users [post]
 func CreateUser(service user.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var createUserPayload user.CreateUserRequest
@@ -119,17 +119,17 @@ func CreateUser(service user.Service) fiber.Handler {
 }
 
 // UpdateUser godoc
-// @Summary      Update user details
-// @Description  Updates the details of an existing user. This requires the user ID and the data to be updated.
-// @Tags         users
-// @Accept       json
-// @Produce      json
-// @Param        id   path      int    true  "User ID"
-// @Success      200
-// @Failure      400  {object}  HTTPError  "Invalid request, missing parameters"
-// @Failure      404  {object}  HTTPError  "User not found"
-// @Failure      500  {object}  HTTPError  "Internal server error"
-// @Router       /users/{id} [put]
+//	@Summary		Update user details
+//	@Description	Updates the details of an existing user. This requires the user ID and the data to be updated.
+//	@Tags			users
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path	int	true	"User ID"
+//	@Success		200
+//	@Failure		400	{object}	HTTPError	"Invalid request, missing parameters"
+//	@Failure		404	{object}	HTTPError	"User not found"
+//	@Failure		500	{object}	HTTPError	"Internal server error"
+//	@Router			/users/{id} [put]
 func UpdateUser(service user.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		return c.SendString("update user")
@@ -137,17 +137,17 @@ func UpdateUser(service user.Service) fiber.Handler {
 }
 
 // DeleteUser godoc
-// @Summary      Delete a user
-// @Description  Deletes an existing user based on the user ID provided in the path parameter.
-// @Tags         users
-// @Accept       json
-// @Produce      json
-// @Param        id   path      int    true  "User ID"
-// @Success      200  {string}  string "User successfully deleted"
-// @Failure      400  {object}  HTTPError  "Invalid request, missing parameters or deletion error"
-// @Failure      404  {object}  HTTPError  "User not found"
-// @Failure      500  {object}  HTTPError  "Internal server error"
-// @Router       /users/{id} [delete]
+//	@Summary		Delete a user
+//	@Description	Deletes an existing user based on the user ID provided in the path parameter.
+//	@Tags			users
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int			true	"User ID"
+//	@Success		200	{string}	string		"User successfully deleted"
+//	@Failure		400	{object}	HTTPError	"Invalid request, missing parameters or deletion error"
+//	@Failure		404	{object}	HTTPError	"User not found"
+//	@Failure		500	{object}	HTTPError	"Internal server error"
+//	@Router			/users/{id} [delete]
 func DeleteUser(service user.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		id := c.Params("id")
@@ -166,7 +166,7 @@ func DeleteUser(service user.Service) fiber.Handler {
 }
 
 // HTTPError represents a standard error response
-// @Description A standard error response structure
+//	@Description	A standard error response structure
 type HTTPError struct {
 	Message string `json:"message"`
 	Code    int    `json:"code"`
