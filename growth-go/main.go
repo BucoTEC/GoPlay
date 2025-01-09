@@ -1,6 +1,7 @@
 package main
 
 import (
+	"growth-go/controllers"
 	_ "growth-go/docs"
 
 	"github.com/gofiber/fiber/v2"
@@ -21,6 +22,8 @@ func main() {
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World!")
 	})
+
+	app.Get("/hello", controllers.HelloWorld)
 
 	app.Listen(":3000")
 }
