@@ -1,8 +1,7 @@
 package main
 
 import (
-	"growth-go/controllers"
-	_ "growth-go/docs"
+	"growth-go/api/routes"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -15,15 +14,17 @@ import (
 // @termsOfService	http://swagger.io/terms/
 func main() {
 	app := fiber.New()
-	app.Get("/swagger/*", swagger.HandlerDefault)
-
 	app.Use(cors.New())
-
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
+		return c.SendString("Live check")
 	})
 
-	app.Get("/hello", controllers.HelloWorld)
+	api := app.Group("/api")
+	v1 := api.Group("/v1")
+	v1.Get("/swagger/*", swagger.HandlerDefault)
+
+	// setup of routes
+	routes.VisitorRoutes(v1)
 
 	app.Listen(":3000")
 }
