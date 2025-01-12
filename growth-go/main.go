@@ -28,6 +28,3 @@ func main() {
 
 	app.Listen(":3000")
 }
-
-// update the core of the product
-// add unit test
