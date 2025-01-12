@@ -30,3 +30,4 @@ func main() {
 }
 
 // update the core of the product
+// add unit test
