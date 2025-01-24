@@ -6,6 +6,7 @@ import (
 )
 
 // SearchUsers godoc
+//
 //	@Summary		Search users by email
 //	@Description	Retrieves a list of users based on the email query parameter.
 //
@@ -51,6 +52,7 @@ func SearchUsers(service user.Service) fiber.Handler {
 }
 
 // GetUserById godoc
+//
 //	@Summary		Get user by ID
 //	@Description	Retrieves a user by their unique ID. If the user is not found, a 404 Not Found error is returned.
 //	@Tags			users
@@ -119,6 +121,7 @@ func CreateUser(service user.Service) fiber.Handler {
 }
 
 // UpdateUser godoc
+//
 //	@Summary		Update user details
 //	@Description	Updates the details of an existing user. This requires the user ID and the data to be updated.
 //	@Tags			users
@@ -137,6 +140,7 @@ func UpdateUser(service user.Service) fiber.Handler {
 }
 
 // DeleteUser godoc
+//
 //	@Summary		Delete a user
 //	@Description	Deletes an existing user based on the user ID provided in the path parameter.
 //	@Tags			users
@@ -166,8 +170,11 @@ func DeleteUser(service user.Service) fiber.Handler {
 }
 
 // HTTPError represents a standard error response
+//
 //	@Description	A standard error response structure
 type HTTPError struct {
 	Message string `json:"message"`
 	Code    int    `json:"code"`
 }
+
+// Change code
