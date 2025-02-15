@@ -24,5 +24,3 @@ func main() {
 	fmt.Println(names[len(names)-1])
 
 }
-
-// setup base loading
