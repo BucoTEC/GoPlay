@@ -24,3 +24,5 @@ func main() {
 	fmt.Println(names[len(names)-1])
 
 }
+
+// clean up core
