@@ -24,3 +24,8 @@ func main() {
 	fmt.Println(names[len(names)-1])
 
 }
+
+func printType[T any](input T) {
+	format := "%T\n"
+	fmt.Printf(format, input)
+}
