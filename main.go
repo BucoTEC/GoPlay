@@ -21,6 +21,8 @@ func main() {
 
 	names = append(names, "Adnan")
 
+	printType(names)
+
 	fmt.Println(names[len(names)-1])
 
 }
