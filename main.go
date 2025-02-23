@@ -31,5 +31,3 @@ func printType[T any](input T) {
 	format := "%T\n"
 	fmt.Printf(format, input)
 }
-
-// update core configurations
