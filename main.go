@@ -7,8 +7,12 @@ func main() {
 
 	names := []string{"John", "Paul", "George", "Ringo"}
 
-	for i := 0; i < len(names); i++ {
+	for i := range names {
 		fmt.Println(names[i])
+	}
+
+	for i, name := range names {
+		fmt.Println(i, name) // Prints both index and value
 	}
 
 	type person struct {
