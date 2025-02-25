@@ -5,33 +5,11 @@ import "fmt"
 func main() {
 	fmt.Println("Hello World")
 
-	names := []string{"John", "Paul", "George", "Ringo"}
+	map1 := make(map[string]int)
 
-	for i := range names {
-		fmt.Println(names[i])
-	}
+	map2 := map[string]int{}
 
-	for i, name := range names {
-		fmt.Println(i, name) // Prints both index and value
-	}
+	fmt.Println(map1)
+	fmt.Println(map2)
 
-	type person struct {
-		Name string
-	}
-
-	adnan := person{Name: "Adnan"}
-
-	fmt.Println(adnan.Name)
-
-	names = append(names, "Adnan")
-
-	printType(names)
-
-	fmt.Println(names[len(names)-1])
-
-}
-
-func printType[T any](input T) {
-	format := "%T\n"
-	fmt.Printf(format, input)
 }
