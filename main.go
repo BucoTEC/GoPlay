@@ -3,13 +3,13 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("Hello World")
 
-	map1 := make(map[string]int)
+	data := make(chan string)
 
-	map2 := map[string]int{}
+	go func() {
+		data <- "Hello World"
+	}()
 
-	fmt.Println(map1)
-	fmt.Println(map2)
+	fmt.Println(<-data)
 
 }
