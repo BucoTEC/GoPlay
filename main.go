@@ -22,3 +22,9 @@ func main() {
 // api gateway
 // lambda
 // secrets
+// push to a message broker
+// sql orm
+// sql custom
+// grpc
+// graphql
+// auth server
