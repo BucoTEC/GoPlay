@@ -1,30 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"log"
+
+	"github.com/gofiber/fiber/v2"
+)
 
 func main() {
+	app := fiber.New()
 
-	data := make(chan string)
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("Hello, World!")
+	})
 
-	go func() {
-		data <- "Hello World"
-	}()
-
-	fmt.Println(<-data)
-
+	log.Fatal(app.Listen(":3000"))
 }
-
-// github actions ci cd
-// two step
-// build with push do aws ecr
-// deploy to aws ecs
-// cloud watch monitoring check x-ray
-// api gateway
-// lambda
-// secrets
-// push to a message broker
-// sql orm
-// sql custom
-// grpc
-// graphql
-// auth server
