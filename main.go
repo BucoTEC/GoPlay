@@ -18,5 +18,3 @@ func main() {
 
 	log.Fatal(app.Listen(":3000"))
 }
-
-// TODO add deployment pipeline to be multistage
