@@ -29,7 +29,10 @@ func main() {
 	// Define a route for the GET method on the root path '/'
 	app.Get("/", func(c *fiber.Ctx) error {
 		// Send a string response to the client
-		return c.SendString("Hello, World 👋!")
+		contentType := c.Get("Content-Type")
+		res := fmt.Sprintf("Hello, World 👋! %s", contentType)
+
+		return c.SendString(res)
 	})
 
 	// get by id
@@ -60,9 +63,11 @@ func main() {
 
 	// search
 	app.Get("/", func(c *fiber.Ctx) error {
+		sortByDate := c.Query("sort-by-date", "newest-first")
 		// get query params
 		// Send a string response to the client
-		return c.SendString("Hello, World 👋!")
+		res := fmt.Sprintf("Hello, World 👋! %s", sortByDate)
+		return c.SendString(res)
 	})
 
 	// Start the server on port 3000
