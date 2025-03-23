@@ -38,7 +38,7 @@ func main() {
 		id := c.Params("id")
 		// Send a string response to the client
 		res := fmt.Sprintf("Hello, World 👋! %s", id)
-		return c.SendString(res)
+		return c.Status(fiber.StatusOK).SendString(res)
 	})
 
 	// update
@@ -55,7 +55,7 @@ func main() {
 		id := c.Params("id")
 		// Send a string response to the client
 		res := fmt.Sprintf("Hello, World 👋! %s", id)
-		return c.SendString(res)
+		return c.Status(fiber.StatusOK).SendString(res)
 	})
 
 	// search
