@@ -1,0 +1,6 @@
+@GoPlay_HostAddress = http://localhost:5080
+
+GET {{GoPlay_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
