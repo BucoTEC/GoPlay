@@ -1,0 +1,134 @@
+{
+  "_meta": {
+    "description": "Complete PRD extraction output schema",
+    "version": "1.0",
+    "generatedBy": "Prototype Analyzer Multi-Agent System"
+  },
+  "project": {
+    "name": "string | 'not found'",
+    "client": "string | 'not found'",
+    "date": "string | 'not found'",
+    "description": "string | 'not found'"
+  },
+  "brandFoundations": {
+    "brandDescription": "string | 'not found'",
+    "mission": "string | 'not found'",
+    "vision": "string | 'not found'",
+    "coreValues": ["string"] || ["not found"],
+    "problemStatement": "string | 'not found'",
+    "solutionStatement": "string | 'not found'",
+    "toneOfVoice": ["string"] || ["not found"],
+    "brandEthos": "string | 'not found'",
+    "brandArchetype": "string | 'not found'",
+    "brandPromise": "string | 'not found'"
+  },
+  "targetAudience": [
+    {
+      "name": "string | 'not found'",
+      "segment": "string | 'not found'",
+      "role": "string | 'not found'",
+      "techComfort": "string | 'not found'",
+      "demographics": "string | 'not found'",
+      "psychographics": "string | 'not found'",
+      "goals": ["string"] || ["not found"],
+      "painPoints": ["string"] || ["not found"],
+      "behaviours": ["string"] || ["not found"],
+      "geography": "string | 'not found'",
+      "jobsToBeDone": ["string"] || ["not found"]
+    }
+  ],
+  "desiredEmotions": ["string"] || ["not found"],
+  "positioningAndMessaging": {
+    "tagline": "string | 'not found'",
+    "positioningStatement": "string | 'not found'",
+    "elevatorPitch": "string | 'not found'",
+    "messagingPillars": ["string"] || ["not found"],
+    "coreHooks": ["string"] || ["not found"],
+    "narrativeFragments": ["string"] || ["not found"]
+  },
+  "visualIdentity": {
+    "primaryColor": "string | 'not found'",
+    "secondaryColors": ["string"] || ["not found"],
+    "typography": {
+      "headingFont": "string | 'not found'",
+      "bodyFont": "string | 'not found'"
+    },
+    "logoPrimary": "string | 'not found'",
+    "logoSecondary": "string | 'not found'",
+    "symbol": "string | 'not found'",
+    "imageryGuidelines": ["string"] || ["not found"],
+    "designInspiration": [
+      {
+        "site": "string | 'not found'",
+        "notes": "string | 'not found'"
+      }
+    ],
+    "mockupExamples": ["string"] || ["not found"]
+  },
+  "competitiveAnalysis": {
+    "marketCategory": "string | 'not found'",
+    "positioningSummary": "string | 'not found'",
+    "comparativeDimensions": ["string"] || ["not found"],
+    "competitors": ["string"] || ["not found"],
+    "differentiationStrategy": {
+      "keyOpportunities": ["string"] || ["not found"],
+      "uniqueSellingPoints": ["string"] || ["not found"],
+      "whiteSpaceInsights": "string | 'not found'",
+      "blueOceanIndicators": ["string"] || ["not found"]
+    },
+    "visualReferences": ["string"] || ["not found"]
+  },
+  "problemDefinition": {
+    "context": "string | 'not found'",
+    "primaryProblem": "string | 'not found'",
+    "secondaryProblems": ["string"] || ["not found"],
+    "businessImpact": "string | 'not found'",
+    "userPainPoints": ["string"] || ["not found"],
+    "hypotheses": ["string"] || ["not found"],
+    "constraints": ["string"] || ["not found"]
+  },
+  "solutionOverview": {
+    "valueProposition": "string | 'not found'",
+    "keyFeatures": ["string"] || ["not found"],
+    "differentiators": ["string"] || ["not found"],
+    "outOfScopeForNow": ["string"] || ["not found"],
+    "nonFunctionalRequirements": ["string"] || ["not found"]
+  },
+  "customerProfiles": {
+    "earlyAdopterProfile": {
+      "description": "string | 'not found'",
+      "organisationType": ["string"] || ["not found"],
+      "teamSizeRange": "string | 'not found'",
+      "currentTools": ["string"] || ["not found"],
+      "triggerEvents": ["string"] || ["not found"],
+      "successSignals": ["string"] || ["not found"]
+    },
+    "idealCustomerProfile": {
+      "description": "string | 'not found'",
+      "organisationType": ["string"] || ["not found"],
+      "teamSizeRange": "string | 'not found'",
+      "regions": ["string"] || ["not found"],
+      "budgetRange": "string | 'not found'",
+      "maturityLevel": "string | 'not found'",
+      "keyStakeholders": ["string"] || ["not found"]
+    }
+  },
+  "leanCanvas": {
+    "uniqueValueProposition": "string | 'not found'",
+    "unfairAdvantage": "string | 'not found'",
+    "customerSegments": ["string"] || ["not found"],
+    "existingAlternatives": ["string"] || ["not found"],
+    "keyMetrics": ["string"] || ["not found"],
+    "highLevelConcept": "string | 'not found'",
+    "channels": ["string"] || ["not found"],
+    "costStructure": ["string"] || ["not found"],
+    "revenueStreams": ["string"] || ["not found"]
+  },
+  "technicalArchitecture": {
+    "techStack": ["string"] || ["not found"],
+    "dependencies": ["string"] || ["not found"],
+    "apiEndpoints": ["string"] || ["not found"],
+    "databaseSchema": "string | 'not found'",
+    "deploymentNotes": "string | 'not found'"
+  }
+}

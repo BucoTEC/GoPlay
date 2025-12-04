@@ -1,17 +1,99 @@
-research_task:
+extract_project_metadata:
   description: >
-    Conduct a thorough research about {topic}
-    Make sure you find any interesting and relevant information given
-    the current year is {current_year}.
+    Search repository {repo_url} for project metadata. Check README.md, package.json, 
+    pyproject.toml, about pages, and project documentation. Extract: project name, 
+    client/organization, project date, description. CRITICAL: Only report what you find - 
+    use "not found" for missing information.
   expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
-  agent: researcher
+    JSON object with fields: name, client, date, description. Use "not found" for any field not found in repository.
+  agent: project_metadata_extractor
 
-reporting_task:
+extract_brand_foundations:
   description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
+    Search repository {repo_url} for brand foundations. Check brand guidelines, about pages, 
+    mission statements, docs/brand folders. Extract: brand description, mission, vision, 
+    core values, brand ethos, tone of voice. CRITICAL: Only report documented brand information.
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
-  agent: reporting_analyst
+    JSON object with brand fields. Use "not found" for any missing brand information.
+  agent: brand_foundations_analyst
+
+extract_target_audience:
+  description: >
+    Search repository {repo_url} for target audience information. Check user personas, 
+    market research docs, user stories, docs/users folders. Extract audience segments, 
+    demographics, pain points, goals, jobs to be done. CRITICAL: Never invent user profiles.
+  expected_output: >
+    JSON array of audience segments. Use "not found" for missing audience data.
+  agent: target_audience_researcher
+
+extract_positioning_messaging:
+  description: >
+    Search repository {repo_url} for positioning and messaging. Check marketing docs, 
+    taglines in README, value propositions, messaging frameworks. Extract: tagline, 
+    positioning statement, elevator pitch, messaging pillars. CRITICAL: Only quote actual messaging found.
+  expected_output: >
+    JSON object with messaging fields. Use "not found" for missing messaging elements.
+  agent: positioning_messaging_expert
+
+extract_visual_identity:
+  description: >
+    Search repository {repo_url} for visual identity. Check design system docs, CSS files, 
+    style guides, design tokens, theme configurations. Extract: colors, typography, logo 
+    references, design guidelines. CRITICAL: Only report actual design specifications.
+  expected_output: >
+    JSON object with visual identity fields. Use "not found" for missing design elements.
+  agent: visual_identity_extractor
+
+extract_competitive_analysis:
+  description: >
+    Search repository {repo_url} for competitive analysis. Check competitive analysis docs, 
+    market research, differentiation strategy documents. Extract: competitors, market positioning, 
+    competitive dimensions. CRITICAL: Only report documented competitive intelligence.
+  expected_output: >
+    JSON object with competitive analysis. Use "not found" for missing competitive data.
+  agent: competitive_analyst
+
+extract_problem_definition:
+  description: >
+    Search repository {repo_url} for problem definition. Check problem statements, context docs, 
+    constraints, hypotheses, research findings. Extract: primary problem, context, business impact, 
+    user pain points. CRITICAL: Only report explicitly stated problems.
+  expected_output: >
+    JSON object with problem definition. Use "not found" for missing problem information.
+  agent: problem_definition_specialist
+
+extract_solution_overview:
+  description: >
+    Search repository {repo_url} for solution overview. Check feature docs, product roadmap, 
+    README features section. Extract: value proposition, key features, differentiators, 
+    non-functional requirements. CRITICAL: Only report documented features.
+  expected_output: >
+    JSON object with solution details. Use "not found" for missing solution information.
+  agent: solution_overview_expert
+
+extract_customer_profiles:
+  description: >
+    Search repository {repo_url} for customer profiles. Check ICP docs, buyer personas, 
+    target customer documentation. Extract: customer segments, organization types, team sizes, 
+    stakeholders. CRITICAL: Only report explicit customer profile documentation.
+  expected_output: >
+    JSON object with customer profiles. Use "not found" for missing customer data.
+  agent: customer_profile_analyst
+
+extract_lean_canvas:
+  description: >
+    Search repository {repo_url} for business model information. Check lean canvas docs, 
+    business model documentation, revenue strategy. Extract: value proposition, channels, 
+    cost structure, revenue streams. CRITICAL: Only report documented business model elements.
+  expected_output: >
+    JSON object with lean canvas elements. Use "not found" for missing business model data.
+  agent: lean_canvas_extractor
+
+extract_technical_architecture:
+  description: >
+    Analyze repository {repo_url} technical structure. Check package.json, requirements.txt, 
+    go.mod, Cargo.toml, dependency files, architecture docs. Extract: tech stack, dependencies, 
+    API endpoints, database schema. CRITICAL: Only report actual technical findings from codebase.
+  expected_output: >
+    JSON object with technical architecture. Use "not found" for missing technical information.
+  agent: technical_architecture_analyst
