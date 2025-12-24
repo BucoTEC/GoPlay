@@ -17,17 +17,18 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Plus, Search, MoreHorizontal, Eye, Pencil, Trash2, Filter } from "lucide-react"
+import { Plus, Search, MoreHorizontal, Eye, Pencil, Trash2, Filter, Loader2, ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
 
 export default function PatientsPage() {
-  const { patients, deletePatient } = usePatients()
+  const { patients, loading, error, pagination, filters, setFilters, deletePatient, refreshPatients } = usePatients()
   const [searchQuery, setSearchQuery] = useState("")
   const [filterStatus, setFilterStatus] = useState<string>("all")
   const [filterRisk, setFilterRisk] = useState<string>("all")
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [patientToDelete, setPatientToDelete] = useState<Patient | null>(null)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const filteredPatients = patients.filter((patient) => {
     const matchesSearch =
@@ -39,13 +40,37 @@ export default function PatientsPage() {
     return matchesSearch && matchesStatus && matchesRisk
   })
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (patientToDelete) {
-      deletePatient(patientToDelete.id)
-      toast.success(`Patient ${patientToDelete.firstName} ${patientToDelete.lastName} deleted`)
-      setDeleteDialogOpen(false)
-      setPatientToDelete(null)
+      setIsDeleting(true)
+      try {
+        await deletePatient(patientToDelete.id)
+        toast.success(`Patient ${patientToDelete.firstName} ${patientToDelete.lastName} deleted`)
+        setDeleteDialogOpen(false)
+        setPatientToDelete(null)
+      } catch {
+        toast.error("Failed to delete patient")
+      } finally {
+        setIsDeleting(false)
+      }
     }
+  }
+
+  const handlePageChange = (newPage: number) => {
+    setFilters({ ...filters, page: newPage })
+  }
+
+  if (error) {
+    return (
+      <AppShell title="Patients" subtitle="Manage your patient records">
+        <Card>
+          <CardContent className="p-8 text-center">
+            <p className="text-destructive mb-4">Error loading patients: {error}</p>
+            <Button onClick={refreshPatients}>Retry</Button>
+          </CardContent>
+        </Card>
+      </AppShell>
+    )
   }
 
   return (
@@ -107,119 +132,152 @@ export default function PatientsPage() {
         {/* Patients Table */}
         <Card>
           <CardHeader>
-            <CardTitle>Patient Records ({filteredPatients.length})</CardTitle>
+            <CardTitle>Patient Records ({pagination.total})</CardTitle>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Patient</TableHead>
-                  <TableHead>MRN</TableHead>
-                  <TableHead>Age/Gender</TableHead>
-                  <TableHead>Vitals</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Risk Level</TableHead>
-                  <TableHead>Last Visit</TableHead>
-                  <TableHead className="w-12"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredPatients.map((patient) => {
-                  const age = new Date().getFullYear() - new Date(patient.dateOfBirth).getFullYear()
-                  return (
-                    <TableRow key={patient.id}>
-                      <TableCell>
-                        <div className="flex items-center gap-3">
-                          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary text-sm font-medium">
-                            {patient.firstName[0]}
-                            {patient.lastName[0]}
+            {loading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Patient</TableHead>
+                    <TableHead>MRN</TableHead>
+                    <TableHead>Age/Gender</TableHead>
+                    <TableHead>Vitals</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Risk Level</TableHead>
+                    <TableHead>Last Visit</TableHead>
+                    <TableHead className="w-12"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredPatients.map((patient) => {
+                    const age = new Date().getFullYear() - new Date(patient.dateOfBirth).getFullYear()
+                    return (
+                      <TableRow key={patient.id}>
+                        <TableCell>
+                          <div className="flex items-center gap-3">
+                            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary text-sm font-medium">
+                              {patient.firstName[0]}
+                              {patient.lastName[0]}
+                            </div>
+                            <div>
+                              <p className="font-medium">
+                                {patient.firstName} {patient.lastName}
+                              </p>
+                              <p className="text-sm text-muted-foreground">{patient.email}</p>
+                            </div>
                           </div>
-                          <div>
-                            <p className="font-medium">
-                              {patient.firstName} {patient.lastName}
+                        </TableCell>
+                        <TableCell className="font-mono text-sm">{patient.mrn}</TableCell>
+                        <TableCell>
+                          {age}y / {patient.gender === "male" ? "M" : patient.gender === "female" ? "F" : "O"}
+                        </TableCell>
+                        <TableCell>
+                          <div className="text-sm">
+                            <p>
+                              BP: {patient.bloodPressureSystolic || "N/A"}/{patient.bloodPressureDiastolic || "N/A"}
                             </p>
-                            <p className="text-sm text-muted-foreground">{patient.email}</p>
+                            <p className="text-muted-foreground">BMI: {patient.bmi ? patient.bmi.toFixed(1) : "N/A"}</p>
                           </div>
-                        </div>
-                      </TableCell>
-                      <TableCell className="font-mono text-sm">{patient.mrn}</TableCell>
-                      <TableCell>
-                        {age}y / {patient.gender === "male" ? "M" : patient.gender === "female" ? "F" : "O"}
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-sm">
-                          <p>
-                            BP: {patient.bloodPressureSystolic}/{patient.bloodPressureDiastolic}
-                          </p>
-                          <p className="text-muted-foreground">BMI: {patient.bmi.toFixed(1)}</p>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={
-                            patient.status === "critical"
-                              ? "destructive"
-                              : patient.status === "active"
-                                ? "default"
-                                : "secondary"
-                          }
-                        >
-                          {patient.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant="outline"
-                          className={
-                            patient.riskLevel === "high"
-                              ? "border-destructive text-destructive"
-                              : patient.riskLevel === "moderate"
-                                ? "border-warning text-warning"
-                                : "border-accent text-accent"
-                          }
-                        >
-                          {patient.riskLevel}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-muted-foreground">{patient.lastVisit}</TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                              <MoreHorizontal className="w-4 h-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem asChild>
-                              <Link href={`/patients/${patient.id}`}>
-                                <Eye className="w-4 h-4 mr-2" />
-                                View Details
-                              </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                              <Link href={`/patients/${patient.id}/edit`}>
-                                <Pencil className="w-4 h-4 mr-2" />
-                                Edit
-                              </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="text-destructive"
-                              onClick={() => {
-                                setPatientToDelete(patient)
-                                setDeleteDialogOpen(true)
-                              }}
-                            >
-                              <Trash2 className="w-4 h-4 mr-2" />
-                              Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  )
-                })}
-              </TableBody>
-            </Table>
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            variant={
+                              patient.status === "critical"
+                                ? "destructive"
+                                : patient.status === "active"
+                                  ? "default"
+                                  : "secondary"
+                            }
+                          >
+                            {patient.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            variant="outline"
+                            className={
+                              patient.riskLevel === "high"
+                                ? "border-destructive text-destructive"
+                                : patient.riskLevel === "moderate"
+                                  ? "border-warning text-warning"
+                                  : "border-accent text-accent"
+                            }
+                          >
+                            {patient.riskLevel}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-muted-foreground">{patient.lastVisit}</TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon">
+                                <MoreHorizontal className="w-4 h-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem asChild>
+                                <Link href={`/patients/${patient.id}`}>
+                                  <Eye className="w-4 h-4 mr-2" />
+                                  View Details
+                                </Link>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem asChild>
+                                <Link href={`/patients/${patient.id}/edit`}>
+                                  <Pencil className="w-4 h-4 mr-2" />
+                                  Edit
+                                </Link>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="text-destructive"
+                                onClick={() => {
+                                  setPatientToDelete(patient)
+                                  setDeleteDialogOpen(true)
+                                }}
+                              >
+                                <Trash2 className="w-4 h-4 mr-2" />
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
+                </TableBody>
+              </Table>
+            )}
+
+            {/* Pagination */}
+            {pagination.pages > 1 && (
+              <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                <p className="text-sm text-muted-foreground">
+                  Showing page {pagination.page} of {pagination.pages} ({pagination.total} patients)
+                </p>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handlePageChange(pagination.page - 1)}
+                    disabled={pagination.page <= 1 || loading}
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handlePageChange(pagination.page + 1)}
+                    disabled={pagination.page >= pagination.pages || loading}
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -235,10 +293,11 @@ export default function PatientsPage() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
+            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)} disabled={isDeleting}>
               Cancel
             </Button>
-            <Button variant="destructive" onClick={handleDelete}>
+            <Button variant="destructive" onClick={handleDelete} disabled={isDeleting}>
+              {isDeleting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               Delete
             </Button>
           </DialogFooter>

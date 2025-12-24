@@ -1,14 +1,14 @@
 "use client"
 
-import { use } from "react"
+import { use, useEffect, useState } from "react"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { AppShell } from "@/components/layout/app-shell"
-import { usePatients } from "@/context/patients-context"
+import { usePatients, type Patient } from "@/context/patients-context"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Pencil, Activity, Heart, Droplets, FlaskConical } from "lucide-react"
+import { ArrowLeft, Pencil, Activity, Heart, Droplets, FlaskConical, Loader2 } from "lucide-react"
 
 export default function PatientDetailPage({
   params,
@@ -16,10 +16,42 @@ export default function PatientDetailPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = use(params)
-  const { getPatient } = usePatients()
-  const patient = getPatient(id)
+  const { fetchPatientDetail } = usePatients()
+  const [patient, setPatient] = useState<Patient | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  if (!patient) {
+  useEffect(() => {
+    async function loadPatient() {
+      setLoading(true)
+      setError(null)
+      try {
+        const data = await fetchPatientDetail(id)
+        if (!data) {
+          setError("Patient not found")
+        } else {
+          setPatient(data)
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load patient")
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadPatient()
+  }, [id, fetchPatientDetail])
+
+  if (loading) {
+    return (
+      <AppShell title="Loading..." subtitle="Please wait">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+        </div>
+      </AppShell>
+    )
+  }
+
+  if (error || !patient) {
     notFound()
   }
 
@@ -115,28 +147,28 @@ export default function PatientDetailPage({
                 <div className="p-4 rounded-lg bg-secondary">
                   <p className="text-sm text-muted-foreground">Blood Pressure</p>
                   <p className="text-2xl font-semibold">
-                    {patient.bloodPressureSystolic}/{patient.bloodPressureDiastolic}
+                    {patient.bloodPressureSystolic || "N/A"}/{patient.bloodPressureDiastolic || "N/A"}
                   </p>
                   <p className="text-xs text-muted-foreground">mmHg</p>
                 </div>
                 <div className="p-4 rounded-lg bg-secondary">
                   <p className="text-sm text-muted-foreground">Heart Rate</p>
-                  <p className="text-2xl font-semibold">{patient.heartRate}</p>
+                  <p className="text-2xl font-semibold">{patient.heartRate || "N/A"}</p>
                   <p className="text-xs text-muted-foreground">bpm</p>
                 </div>
                 <div className="p-4 rounded-lg bg-secondary">
                   <p className="text-sm text-muted-foreground">BMI</p>
-                  <p className="text-2xl font-semibold">{patient.bmi.toFixed(1)}</p>
+                  <p className="text-2xl font-semibold">{patient.bmi ? patient.bmi.toFixed(1) : "N/A"}</p>
                   <p className="text-xs text-muted-foreground">kg/m²</p>
                 </div>
                 <div className="p-4 rounded-lg bg-secondary">
                   <p className="text-sm text-muted-foreground">Weight</p>
-                  <p className="text-2xl font-semibold">{patient.weight}</p>
+                  <p className="text-2xl font-semibold">{patient.weight || "N/A"}</p>
                   <p className="text-xs text-muted-foreground">kg</p>
                 </div>
                 <div className="p-4 rounded-lg bg-secondary">
                   <p className="text-sm text-muted-foreground">Height</p>
-                  <p className="text-2xl font-semibold">{patient.height}</p>
+                  <p className="text-2xl font-semibold">{patient.height || "N/A"}</p>
                   <p className="text-xs text-muted-foreground">cm</p>
                 </div>
               </div>
@@ -153,69 +185,73 @@ export default function PatientDetailPage({
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
               <div className="p-4 rounded-lg bg-secondary">
                 <p className="text-sm text-muted-foreground">HbA1c</p>
-                <p className="text-xl font-semibold">{patient.hba1c}%</p>
-                <Badge
-                  variant="outline"
-                  className={
-                    patient.hba1c >= 6.5
-                      ? "border-destructive text-destructive mt-1"
-                      : patient.hba1c >= 5.7
-                        ? "border-warning text-warning mt-1"
-                        : "border-accent text-accent mt-1"
-                  }
-                >
-                  {patient.hba1c >= 6.5 ? "Diabetic" : patient.hba1c >= 5.7 ? "Pre-diabetic" : "Normal"}
-                </Badge>
+                <p className="text-xl font-semibold">{patient.hba1c ? `${patient.hba1c}%` : "N/A"}</p>
+                {patient.hba1c && (
+                  <Badge
+                    variant="outline"
+                    className={
+                      patient.hba1c >= 6.5
+                        ? "border-destructive text-destructive mt-1"
+                        : patient.hba1c >= 5.7
+                          ? "border-warning text-warning mt-1"
+                          : "border-accent text-accent mt-1"
+                    }
+                  >
+                    {patient.hba1c >= 6.5 ? "Diabetic" : patient.hba1c >= 5.7 ? "Pre-diabetic" : "Normal"}
+                  </Badge>
+                )}
               </div>
               <div className="p-4 rounded-lg bg-secondary">
                 <p className="text-sm text-muted-foreground">Fasting Glucose</p>
-                <p className="text-xl font-semibold">{patient.fastingGlucose}</p>
+                <p className="text-xl font-semibold">{patient.fastingGlucose || "N/A"}</p>
                 <p className="text-xs text-muted-foreground">mg/dL</p>
               </div>
               <div className="p-4 rounded-lg bg-secondary">
                 <p className="text-sm text-muted-foreground">eGFR</p>
-                <p className="text-xl font-semibold">{patient.egfr}</p>
-                <Badge
-                  variant="outline"
-                  className={
-                    patient.egfr < 60
-                      ? "border-destructive text-destructive mt-1"
-                      : patient.egfr < 90
-                        ? "border-warning text-warning mt-1"
-                        : "border-accent text-accent mt-1"
-                  }
-                >
-                  {patient.egfr < 60 ? "CKD Risk" : patient.egfr < 90 ? "Mild Decrease" : "Normal"}
-                </Badge>
+                <p className="text-xl font-semibold">{patient.egfr || "N/A"}</p>
+                {patient.egfr && (
+                  <Badge
+                    variant="outline"
+                    className={
+                      patient.egfr < 60
+                        ? "border-destructive text-destructive mt-1"
+                        : patient.egfr < 90
+                          ? "border-warning text-warning mt-1"
+                          : "border-accent text-accent mt-1"
+                    }
+                  >
+                    {patient.egfr < 60 ? "CKD Risk" : patient.egfr < 90 ? "Mild Decrease" : "Normal"}
+                  </Badge>
+                )}
               </div>
               <div className="p-4 rounded-lg bg-secondary">
                 <p className="text-sm text-muted-foreground">Creatinine</p>
-                <p className="text-xl font-semibold">{patient.creatinine}</p>
+                <p className="text-xl font-semibold">{patient.creatinine || "N/A"}</p>
                 <p className="text-xs text-muted-foreground">mg/dL</p>
               </div>
               <div className="p-4 rounded-lg bg-secondary">
                 <p className="text-sm text-muted-foreground">Urine Albumin</p>
-                <p className="text-xl font-semibold">{patient.albumin}</p>
+                <p className="text-xl font-semibold">{patient.albumin || "N/A"}</p>
                 <p className="text-xs text-muted-foreground">mg/L</p>
               </div>
               <div className="p-4 rounded-lg bg-secondary">
                 <p className="text-sm text-muted-foreground">Total Cholesterol</p>
-                <p className="text-xl font-semibold">{patient.totalCholesterol}</p>
+                <p className="text-xl font-semibold">{patient.totalCholesterol || "N/A"}</p>
                 <p className="text-xs text-muted-foreground">mg/dL</p>
               </div>
               <div className="p-4 rounded-lg bg-secondary">
                 <p className="text-sm text-muted-foreground">LDL</p>
-                <p className="text-xl font-semibold">{patient.ldlCholesterol}</p>
+                <p className="text-xl font-semibold">{patient.ldlCholesterol || "N/A"}</p>
                 <p className="text-xs text-muted-foreground">mg/dL</p>
               </div>
               <div className="p-4 rounded-lg bg-secondary">
                 <p className="text-sm text-muted-foreground">HDL</p>
-                <p className="text-xl font-semibold">{patient.hdlCholesterol}</p>
+                <p className="text-xl font-semibold">{patient.hdlCholesterol || "N/A"}</p>
                 <p className="text-xs text-muted-foreground">mg/dL</p>
               </div>
               <div className="p-4 rounded-lg bg-secondary">
                 <p className="text-sm text-muted-foreground">Triglycerides</p>
-                <p className="text-xl font-semibold">{patient.triglycerides}</p>
+                <p className="text-xl font-semibold">{patient.triglycerides || "N/A"}</p>
                 <p className="text-xs text-muted-foreground">mg/dL</p>
               </div>
             </div>
